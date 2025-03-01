@@ -1,4 +1,4 @@
- #!/bin/bash
+#!/bin/bash
 
 # AB Cyber Security Toolkit Setup
 # This script initializes the project with the required structure and files.
@@ -24,19 +24,19 @@ files=(
 
 # Create directories
 for dir in "${dirs[@]}"; do
-    mkdir -p "$dir"
+    mkdir -p "$dir" || { echo "Failed to create directory: $dir"; exit 1; }
 done
 
 # Create files
 for file in "${files[@]}"; do
-    touch "$file"
+    touch "$file" || { echo "Failed to create file: $file"; exit 1; }
 done
 
 # Add executable permissions to scripts
-chmod +x install.sh uninstall.sh src/*.sh
+chmod +x install.sh uninstall.sh src/*.sh || { echo "Failed to set execute permissions"; exit 1; }
 
 # Populate default settings
-cat <<EOL > config/settings.conf
+cat <<EOL > config/settings.conf || { echo "Failed to write settings.conf"; exit 1; }
 # Configuration File for the Security Toolkit
 LOG_DIR="logs"
 SCAN_MODE="stealth"
@@ -44,7 +44,7 @@ HASH_ALGORITHM="sha256"
 EOL
 
 # Populate README
-cat <<EOL > README.md
+cat <<EOL > README.md || { echo "Failed to write README.md"; exit 1; }
 # Cyber Security Toolkit
 
 This toolkit provides various security-related functionalities:
@@ -70,7 +70,7 @@ Modify \`config/settings.conf\` to customize settings.
 EOL
 
 # Populate LICENSE (MIT as an example)
-cat <<EOL > LICENSE
+cat <<EOL > LICENSE || { echo "Failed to write LICENSE"; exit 1; }
 MIT License
 
 Copyright (c) $(date +%Y)
@@ -79,23 +79,33 @@ Permission is hereby granted, free of charge, to any person obtaining a copy...
 EOL
 
 # Create install script
-cat <<EOL > install.sh
+cat <<EOL > install.sh || { echo "Failed to write install.sh"; exit 1; }
 #!/bin/bash
+
+set -e
 
 echo "Installing AB Cyber Security Toolkit..."
 echo "Ensuring all scripts are executable..."
 chmod +x src/*.sh
+
+if [ ! -d "logs" ]; then
+    mkdir logs
+fi
+
 echo "Installation complete. Run the scripts from the src directory."
 EOL
 chmod +x install.sh
 
 # Create uninstall script
-cat <<EOL > uninstall.sh
+cat <<EOL > uninstall.sh || { echo "Failed to write uninstall.sh"; exit 1; }
 #!/bin/bash
+
+set -e
 
 echo "Removing AB Cyber Security Toolkit..."
 rm -rf config logs src
 rm -f install.sh uninstall.sh LICENSE README.md
+
 echo "Uninstallation complete."
 EOL
 chmod +x uninstall.sh
