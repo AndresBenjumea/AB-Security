@@ -11,7 +11,7 @@ RESET='\033[0m'
 # Function to display banner
 show_banner() {
     figlet -f slant "ABSEC" | lolcat
-    echo -e "${CYAN}Welcome to ABSEC - Network Security Toolkit${RESET}\n"
+    echo -e "${Colombian}Welcome to ABSEC - Network Security Toolkit${RESET}\n"
 }
 
 # Main menu
