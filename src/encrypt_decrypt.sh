@@ -23,4 +23,28 @@ decrypt_text() {
     decrypted=$(echo -n "$encrypted_text" | openssl enc -aes-256-cbc -a -d -salt -pass pass:"$password" 2>/dev/null)
     
     if [[ $? -ne 0 ]]; then
-        echo -e "${RED}Decryption failed! Incorrect passwo
+        echo -e "${RED}Decryption failed! Incorrect password or invalid text.${RESET}"
+    else
+        echo -e "${GREEN}Decrypted Text:${RESET} $decrypted"
+    fi
+}
+
+# Menu function
+main_menu() {
+    while true; do
+        echo -e "${YELLOW}1) Encrypt Text"
+        echo -e "2) Decrypt Text"
+        echo -e "3) Exit${RESET}"
+        read -p "Choose an option: " choice
+
+        case $choice in
+            1) encrypt_text ;;
+            2) decrypt_text ;;
+            3) echo -e "${RED}Exiting...${RESET}"; exit 0 ;;
+            *) echo -e "${RED}Invalid choice!${RESET}" ;;
+        esac
+    done
+}
+
+# Run menu
+main_menu
