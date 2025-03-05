@@ -23,9 +23,9 @@ main_menu() {
         read -p "Enter your choice: " choice
 
         case "" in
-            1) ./src/encrypt_decrypt.sh ;;
-            2) ./src/hash_crack.sh ;;
-            3) ./src/nmap_scan.sh ;;
+            1) bash ./src/encrypt_decrypt.sh ;;
+            2) bash ./src/hash_crack.sh ;;
+            3) bash ./src/nmap_scan.sh ;;
             4) echo -e "Exiting..."; exit 0 ;;
             *) echo -e "Invalid option!" ;;
         esac

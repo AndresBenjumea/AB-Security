@@ -15,7 +15,7 @@ Run:
 ## Running the Toolkit
 After installation, you can start the toolkit by running:
 ```bash
-./src/absec.sh
+./absec.sh
 ```
 
 ## Uninstallation
