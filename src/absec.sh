@@ -99,7 +99,7 @@ if [ ! -d "logs" ]; then
 fi
 
 echo "Installation complete. To run the toolkit, execute:"
-echo "\n  ./src/absec.sh\n"
+echo -e "\n  ./src/absec.sh\n"
 EOL
 chmod +x install.sh
 
@@ -138,12 +138,12 @@ main_menu() {
     while true; do
         echo -e "${BLUE}Select an option:${RESET}"
         echo -e "${YELLOW}1) Encrypt/Decrypt Files"
-        echo -e "2) Hash Cracking"
-        echo -e "3) Nmap Scan"
-        echo -e "4) Exit${RESET}"
+        echo -e "   2) Hash Cracking"
+        echo -e "   3) Nmap Scan"
+        echo -e "   4) Exit${RESET}"
         read -p "Enter your choice: " choice
 
-        case $choice in
+        case "$choice" in
             1) ./src/encrypt_decrypt.sh ;;
             2) ./src/hash_crack.sh ;;
             3) ./src/nmap_scan.sh ;;
@@ -167,5 +167,4 @@ chmod +x src/absec.sh
 
 # Print completion message
 echo "AB Cyber Security Toolkit setup complete! Ready for GitHub deployment."
-echo "To run the toolkit, execute:"
-echo "\n  ./src/absec.sh\n"
+echo -e "To run the toolkit, execute:\n\n  ./src/absec.sh\n"
