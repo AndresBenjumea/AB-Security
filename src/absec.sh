@@ -141,14 +141,14 @@ main_menu() {
         echo -e " 2) Hash Cracking"
         echo -e " 3) Nmap Scan"
         echo -e " 4) Exit${RESET}"
-        read -p "Enter your choice: " choice
+        read -r -p "Enter your choice: " choice
 
         case "$choice" in
-            1) bash src/encrypt_decrypt.sh ;;
-            2) bash src/hash_crack.sh ;;
-            3) bash src/nmap_scan.sh ;;
-            4) echo -e "${RED}Exiting...${RESET}"; exit 0 ;;
-            *) echo -e "${RED}Invalid option!${RESET}" ;;
+            "1") bash src/encrypt_decrypt.sh ;;
+            "2") bash src/hash_crack.sh ;;
+            "3") bash src/nmap_scan.sh ;;
+            "4") echo -e "${RED}Exiting...${RESET}"; exit 0 ;;
+            *) echo -e "${RED}Invalid option! Please enter a number between 1-4.${RESET}" ;;
         esac
     done
 }
