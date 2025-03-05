@@ -144,9 +144,9 @@ main_menu() {
         read -r -p "Enter your choice: " choice
 
         case "$choice" in
-            "1") bash src/encrypt_decrypt.sh ;;
-            "2") bash src/hash_crack.sh ;;
-            "3") bash src/nmap_scan.sh ;;
+            "1") exec bash src/encrypt_decrypt.sh ;;
+            "2") exec bash src/hash_crack.sh ;;
+            "3") exec bash src/nmap_scan.sh ;;
             "4") echo -e "${RED}Exiting...${RESET}"; exit 0 ;;
             *) echo -e "${RED}Invalid option! Please enter a number between 1-4.${RESET}" ;;
         esac
