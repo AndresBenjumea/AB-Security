@@ -17,12 +17,12 @@ main_menu() {
     while true; do
         echo -e "Select an option:"
         echo -e "1) Encrypt/Decrypt Files"
-        echo -e "2) Hash Cracking"
-        echo -e "3) Nmap Scan"
-        echo -e "4) Exit"
+        echo -e "   2) Hash Cracking"
+        echo -e "   3) Nmap Scan"
+        echo -e "   4) Exit"
         read -p "Enter your choice: " choice
 
-        case  in
+        case "" in
             1) ./src/encrypt_decrypt.sh ;;
             2) ./src/hash_crack.sh ;;
             3) ./src/nmap_scan.sh ;;

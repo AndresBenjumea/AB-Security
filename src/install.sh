@@ -11,4 +11,4 @@ if [ ! -d "logs" ]; then
 fi
 
 echo "Installation complete. To run the toolkit, execute:"
-echo "\n  ./src/absec.sh\n"
+echo -e "\n  ./src/absec.sh\n"

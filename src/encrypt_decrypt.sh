@@ -6,40 +6,21 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 RESET='\033[0m'
 
-# Check for OpenSSL
-if ! command -v openssl &>/dev/null; then
-    echo -e "${RED}OpenSSL is not installed. Installing...${RESET}"
-    sudo apt update && sudo apt install openssl -y
-fi
-
-encrypt_file() {
-    read -p "Enter the file to encrypt: " file
-    if [[ -f "$file" ]]; then
-        openssl enc -aes-256-cbc -salt -in "$file" -out "$file.enc"
-        echo -e "${GREEN}File encrypted successfully: $file.enc${RESET}"
-    else
-        echo -e "${RED}File not found!${RESET}"
-    fi
+# Function to encrypt text
+encrypt_text() {
+    read -sp "Enter a password: " password
+    echo
+    read -p "Enter text to encrypt: " plaintext
+    encrypted=$(echo -n "$plaintext" | openssl enc -aes-256-cbc -a -salt -pass pass:"$password")
+    echo -e "${GREEN}Encrypted Text:${RESET} $encrypted"
 }
 
-decrypt_file() {
-    read -p "Enter the file to decrypt: " file
-    if [[ -f "$file" ]]; then
-        openssl enc -aes-256-cbc -d -salt -in "$file" -out "${file%.enc}"
-        echo -e "${GREEN}File decrypted successfully: ${file%.enc}${RESET}"
-    else
-        echo -e "${RED}File not found!${RESET}"
-    fi
-}
-
-echo -e "${YELLOW}1) Encrypt a file"
-echo -e "2) Decrypt a file"
-echo -e "3) Exit${RESET}"
-read -p "Choose an option: " option
-
-case $option in
-    1) encrypt_file ;;
-    2) decrypt_file ;;
-    3) exit 0 ;;
-    *) echo -e "${RED}Invalid option!${RESET}" ;;
-esac
+# Function to decrypt text
+decrypt_text() {
+    read -sp "Enter the password: " password
+    echo
+    read -p "Enter encrypted text: " encrypted_text
+    decrypted=$(echo -n "$encrypted_text" | openssl enc -aes-256-cbc -a -d -salt -pass pass:"$password" 2>/dev/null)
+    
+    if [[ $? -ne 0 ]]; then
+        echo -e "${RED}Decryption failed! Incorrect passwo
