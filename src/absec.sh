@@ -1,5 +1,126 @@
 #!/bin/bash
 
+# AB Cyber Security Toolkit Setup
+# This script initializes the project with the required structure and files.
+
+# Define project structure
+dirs=(
+    "config"
+    "logs"
+    "src"
+)
+
+files=(
+    "config/settings.conf"
+    "install.sh"
+    "uninstall.sh"
+    "LICENSE"
+    "README.md"
+    "absec.sh"
+    "src/encrypt_decrypt.sh"
+    "src/hash_crack.sh"
+    "src/nmap_scan.sh"
+)
+
+# Create directories
+for dir in "${dirs[@]}"; do
+    mkdir -p "$dir" || { echo "Failed to create directory: $dir"; exit 1; }
+done
+
+# Create files
+for file in "${files[@]}"; do
+    touch "$file" || { echo "Failed to create file: $file"; exit 1; }
+done
+
+# Add executable permissions to scripts
+chmod +x install.sh uninstall.sh absec.sh src/*.sh || { echo "Failed to set execute permissions"; exit 1; }
+
+# Populate default settings
+cat > config/settings.conf << EOL
+# Configuration File for the Security Toolkit
+LOG_DIR="logs"
+SCAN_MODE="stealth"
+HASH_ALGORITHM="sha256"
+EOL
+
+# Populate README
+cat > README.md << EOL
+# Cyber Security Toolkit
+
+This toolkit provides various security-related functionalities:
+- **absec.sh**: Network automation tools
+- **encrypt_decrypt.sh**: File encryption and decryption utilities
+- **hash_crack.sh**: Hash cracking mechanisms
+- **nmap_scan.sh**: Advanced Nmap scanning
+
+## Installation
+Run:
+\`\`\`bash
+./install.sh
+\`\`\`
+
+## Running the Toolkit
+After installation, you can start the toolkit by running:
+\`\`\`bash
+./absec.sh
+\`\`\`
+
+## Uninstallation
+Run:
+\`\`\`bash
+./uninstall.sh
+\`\`\`
+
+## Configuration
+Modify \`config/settings.conf\` to customize settings.
+EOL
+
+# Populate LICENSE (MIT as an example)
+cat > LICENSE << EOL
+MIT License
+
+Copyright (c) $(date +%Y)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy...
+EOL
+
+# Create install script
+cat > install.sh << EOL
+#!/bin/bash
+
+set -e
+
+echo "Installing AB Cyber Security Toolkit..."
+echo "Ensuring all scripts are executable..."
+chmod +x absec.sh src/*.sh
+
+if [ ! -d "logs" ]; then
+    mkdir logs
+fi
+
+echo "Installation complete. To run the toolkit, execute:"
+echo -e "\n  ./absec.sh\n"
+EOL
+chmod +x install.sh
+
+# Create uninstall script
+cat > uninstall.sh << EOL
+#!/bin/bash
+
+set -e
+
+echo "Removing AB Cyber Security Toolkit..."
+rm -rf config logs src
+rm -f install.sh uninstall.sh LICENSE README.md absec.sh
+
+echo "Uninstallation complete."
+EOL
+chmod +x uninstall.sh
+
+# Create absec.sh (Main Menu)
+cat > absec.sh << EOL
+#!/bin/bash
+
 # Colors
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
@@ -9,35 +130,41 @@ RESET='\033[0m'
 # Function to display banner
 show_banner() {
     figlet -f slant "ABSEC" | lolcat --freq 0.9 --seed 42 --spread 5
-    echo -e "Welcome to ABSEC - A Cyber Security Toolkit x Andres Benjumea\n"
+    echo -e "${YELLOW}Welcome to ABSEC - A Cyber Security Toolkit by Andres Benjumea${RESET}\n"
 }
 
 # Main menu
 main_menu() {
     while true; do
-        echo -e "Select an option:"
-        echo -e " 1) Encrypt/Decrypt Data"
+        echo -e "${BLUE}Select an option:${RESET}"
+        echo -e "${YELLOW} 1) Encrypt/Decrypt Data"
         echo -e " 2) Hash Cracking"
         echo -e " 3) Nmap Scan"
-        echo -e " 4) Exit"
+        echo -e " 4) Exit${RESET}"
         read -r -p "Enter your choice: " choice
 
-        case "" in
-            "1") exec bash src/encrypt_decrypt.sh ;;
+        case "$choice" in
+            "1") bash src/encrypt_decrypt.sh ;;
             "2") exec bash src/hash_crack.sh ;;
             "3") exec bash src/nmap_scan.sh ;;
-            "4") echo -e "Exiting..."; exit 0 ;;
-            *) echo -e "Invalid option! Please enter a number between 1-4." ;;
+            "4") echo -e "${RED}Exiting...${RESET}"; exit 0 ;;
+            *) echo -e "${RED}Invalid option! Please enter a number between 1-4.${RESET}" ;;
         esac
     done
 }
 
 # Check dependencies
 if ! command -v figlet &>/dev/null || ! command -v lolcat &>/dev/null; then
-    echo -e "Missing dependencies! Installing figlet and lolcat..."
+    echo -e "${RED}Missing dependencies! Installing figlet and lolcat...${RESET}"
     sudo apt update && sudo apt install figlet lolcat -y
 fi
 
 # Start script
 show_banner
 main_menu
+EOL
+chmod +x absec.sh
+
+# Print completion message
+echo "AB Cyber Security Toolkit setup complete! Ready for GitHub deployment."
+echo -e "To run the toolkit, execute:\n\n  ./absec.sh\n"
